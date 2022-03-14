@@ -4,119 +4,110 @@ open NUnit.Framework
 
 open Poker.Cards
 
-[<Test>]
-let HighCard () =
-    let highCardHand = [
-        { Face = King; Suit = Hearts };
-        { Face = Two; Suit = Spades};
-        { Face = Eight; Suit = Clubs };
-        { Face = Jack; Suit = Diamonds };
-        { Face = Six; Suit = Hearts };
-    ]
-    match handToRank highCardHand with
-        | HighCard -> Assert.Pass()
-        | x -> Assert.Fail(x.ToString())
+let highCards = [
+    ["AC";"JH";"3D";"KC";"5C"];
+    ["AC";"2H";"3D";"4C";"6C"];
+    ["2H";"7S";"9H";"3H";"JH"];
+    ["2D";"KS";"QS";"JS";"10S"];
+]
+[<TestCaseSource("highCards")>]
+let HighCard (cards: string list) =
+    match handToRank (cards |> List.map CreateCard) with
+    | HighCard -> Assert.Pass()
+    | x -> Assert.Fail(x.ToString())
 
-[<Test>]
-let Pair () =
-    let pairHand = [
-        { Face = King; Suit = Hearts };
-        { Face = King; Suit = Spades};
-        { Face = Eight; Suit = Clubs };
-        { Face = Jack; Suit = Diamonds };
-        { Face = Six; Suit = Hearts };
-    ]
-    match handToRank pairHand with
-        | Pair -> Assert.Pass()
-        | x -> Assert.Fail(x.ToString())
+let pairs = [
+    ["AC";"JH";"3D";"AC";"5C"];
+    ["7H";"KC";"9C";"6C";"KD"];
+    ["10S";"2H";"9S";"2S";"5S"];
+    ["AD";"JD";"4D";"KD";"4C"];
+]
+[<TestCaseSource("pairs")>]
+let Pair (cards: string list) =
+    match handToRank (cards |> List.map CreateCard) with
+    | Pair -> Assert.Pass()
+    | x -> Assert.Fail(x.ToString())
 
-[<Test>]
-let ThreeOfAKind () =
-    let threeOfAKindHand = [
-        { Face = King; Suit = Hearts };
-        { Face = King; Suit = Spades};
-        { Face = King; Suit = Clubs };
-        { Face = Eight; Suit = Diamonds };
-        { Face = Six; Suit = Hearts };
-    ]
-    match handToRank threeOfAKindHand with
-        | ThreeOfAKind -> Assert.Pass()
-        | x -> Assert.Fail(x.ToString())
+let threeOfAKinds = [
+    ["AC";"AH";"3D";"AC";"5C"];
+    ["KH";"KC";"9C";"6C";"KD"];
+    ["10S";"2H";"2S";"2S";"5S"];
+    ["4D";"JD";"4D";"KD";"4C"];
+]
+[<TestCaseSource("threeOfAKinds")>]
+let ThreeOfAKind (cards: string list) =
+    match handToRank (cards |> List.map CreateCard) with
+    | ThreeOfAKind -> Assert.Pass()
+    | x -> Assert.Fail(x.ToString())
 
-[<Test>]
-let Straight () =
-    let straightHand = [
-        { Face = Eight; Suit = Hearts };
-        { Face = Seven; Suit = Spades};
-        { Face = Six; Suit = Clubs };
-        { Face = Five; Suit = Diamonds };
-        { Face = Four; Suit = Hearts };
-    ]
-    match handToRank straightHand with
-        | Straight -> Assert.Pass()
-        | x -> Assert.Fail(x.ToString())
+let straights = [
+    ["AC";"2H";"3D";"4C";"5C"];
+    ["5H";"7C";"9C";"6C";"8D"];
+    ["2S";"4H";"3S";"6S";"5S"];
+    ["10D";"JD";"QD";"KD";"AC"];
+]
+[<TestCaseSource("straights")>]
+let Straight (cards: string list) =
+    match handToRank (cards |> List.map CreateCard) with
+    | Straight -> Assert.Pass()
+    | x -> Assert.Fail(x.ToString())
 
-[<Test>]
-let Flush () =
-    let flushHand = [
-        { Face = King; Suit = Hearts };
-        { Face = Two; Suit = Hearts};
-        { Face = Eight; Suit = Hearts };
-        { Face = Jack; Suit = Hearts };
-        { Face = Six; Suit = Hearts };
-    ]
-    match handToRank flushHand with
-        | Flush -> Assert.Pass()
-        | x -> Assert.Fail(x.ToString())
+let flushes = [
+    ["2C";"7C";"9C";"3C";"JC"];
+    ["2H";"7H";"9H";"3H";"JH"];
+    ["2S";"7S";"9S";"3S";"JS"];
+    ["2D";"7D";"9D";"3D";"JD"];
+]
+[<TestCaseSource("flushes")>]
+let Flush (cards: string list) =
+    match handToRank (cards |> List.map CreateCard) with
+    | Flush -> Assert.Pass()
+    | x -> Assert.Fail(x.ToString())
 
-[<Test>]
-let FullHouse () =
-    let fullHouseHand = [
-        { Face = King; Suit = Hearts };
-        { Face = King; Suit = Spades };
-        { Face = King; Suit = Clubs };
-        { Face = Two; Suit = Hearts };
-        { Face = Two; Suit = Spades };
-    ]
-    match handToRank fullHouseHand with
-        | FullHouse -> Assert.Pass()
-        | x -> Assert.Fail(x.ToString())
+let fullHouses = [
+    ["KC";"KD";"KS";"2H";"2C"];
+    ["8C";"8D";"8S";"AH";"AC"];
+    ["9C";"AD";"AS";"9H";"9C"];
+    ["8C";"10D";"8S";"10H";"8C"];
+]
+[<TestCaseSource("fullHouses")>]
+let FullHouse (cards: string list) =
+    match handToRank (cards |> List.map CreateCard) with
+    | FullHouse -> Assert.Pass()
+    | x -> Assert.Fail(x.ToString())
 
-[<Test>]
-let FourOfAKind () =
-    let fourOfAKindHand = [
-        { Face = King; Suit = Hearts };
-        { Face = King; Suit = Spades };
-        { Face = King; Suit = Clubs };
-        { Face = King; Suit = Diamonds };
-        { Face = Two; Suit = Spades };
-    ]
-    match handToRank fourOfAKindHand with
-        | FourOfAKind -> Assert.Pass()
-        | x -> Assert.Fail(x.ToString())
+let fourOfAKinds = [
+    ["KC";"KD";"KS";"KH";"9C"];
+    ["2C";"2D";"2S";"2H";"5C"];
+    ["KC";"7D";"7S";"7H";"7C"];
+    ["10C";"10D";"10S";"KH";"10C"];
+]
+[<TestCaseSource("fourOfAKinds")>]
+let FourOfAKind (cards: string list) =
+    match handToRank (cards |> List.map CreateCard) with
+    | FourOfAKind -> Assert.Pass()
+    | x -> Assert.Fail(x.ToString())
 
-[<Test>]
-let StraightFlush () =
-    let straightFlushHand = [
-        { Face = Eight; Suit = Hearts };
-        { Face = Seven; Suit = Hearts};
-        { Face = Six; Suit = Hearts };
-        { Face = Five; Suit = Hearts };
-        { Face = Four; Suit = Hearts };
-    ]
-    match handToRank straightFlushHand with
-        | StraightFlush -> Assert.Pass()
-        | x -> Assert.Fail(x.ToString())
+let straightFlushes = [
+    ["KC";"QC";"JC";"10C";"9C"];
+    ["JD";"10D";"9D";"8D";"7D"];
+    ["AH";"2H";"3H";"4H";"5H"];
+    ["2S";"3S";"4S";"5S";"6S"];
+]
+[<TestCaseSource("straightFlushes")>]
+let StraightFlush (cards: string list) =
+    match handToRank (cards |> List.map CreateCard) with
+    | StraightFlush -> Assert.Pass()
+    | x -> Assert.Fail(x.ToString())
 
-[<Test>]
-let RoyalFlush () =
-    let royalFlushHand = [
-        { Face = Ace; Suit = Hearts };
-        { Face = King; Suit = Hearts};
-        { Face = Queen; Suit = Hearts };
-        { Face = Jack; Suit = Hearts };
-        { Face = Ten; Suit = Hearts };
-    ]
-    match handToRank royalFlushHand with
-        | RoyalFlush -> Assert.Pass()
-        | x -> Assert.Fail(x.ToString())
+let royalFlushes = [
+    ["AC";"KC";"QC";"JC";"10C"];
+    ["AD";"KD";"QD";"JD";"10D"];
+    ["AH";"KH";"QH";"JH";"10H"];
+    ["AS";"KS";"QS";"JS";"10S"];
+]
+[<TestCaseSource("royalFlushes")>]
+let RoyalFlush (cards: string list) =
+    match handToRank (cards |> List.map CreateCard) with
+    | RoyalFlush -> Assert.Pass()
+    | x -> Assert.Fail(x.ToString())
