@@ -22,15 +22,10 @@ module Game =
         match game with
         | Bet { Deck = deck } ->
             Deal { BetSize = betSize; Hand = deck[..4]; Deck = deck[5..] }
-        | Deal _ ->
-            game
-        | Draw _ ->
-            game
+        | _ -> game
 
     let hold game hold =
         match game with
-        | Bet _ ->
-            game
         | Deal { BetSize = _; Hand = hand; Deck = deck } ->
             let drawn = deck |> List.take(5 - (hold |> List.length))
             let held = 
@@ -40,5 +35,4 @@ module Game =
                 |> List.map snd
             let newHand = held @ drawn
             Draw { PayoutAmount = PayoutAmount 0; Hand = newHand; Rank = handToRank newHand }
-        | Draw _ ->
-            game
+        | _ -> game
