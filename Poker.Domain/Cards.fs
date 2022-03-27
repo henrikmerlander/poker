@@ -139,8 +139,7 @@ let handToRank: HandToRank =
 
         let isFlush =
             cards
-            |> List.filter (fun x -> x.Suit = (List.head cards).Suit)
-            |> List.length = List.length cards
+            |> List.forall (fun x -> x.Suit = (List.head cards).Suit)
 
         let isFullHouse =
             let hasThreeOfAKind =
