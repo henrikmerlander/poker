@@ -160,15 +160,8 @@ let handToRank: HandToRank =
             |> List.exists (fun (_, value) -> List.length value = 4)
 
         let isRoyalFlush =
-            let faces = 
-                cards
-                |> List.map (fun x -> x.Face)
             isFlush
-            && (faces |> List.contains Ace)
-            && (faces |> List.contains King)
-            && (faces |> List.contains Queen)
-            && (faces |> List.contains Jack)
-            && (faces |> List.contains Ten)
+            && [Ace;King;Queen;Jack;Ten] |> List.forall (fun x -> cards |> List.exists (fun y -> y.Face = x))
 
         match isPair, isTwoPair, isThreeOfAKind, isStraight, isFlush, isFullHouse, isFourOfAKind, isRoyalFlush with
         | (_, _, _, _, _, _, _, true) -> RoyalFlush
